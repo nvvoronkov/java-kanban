@@ -1,13 +1,12 @@
+import static model.Status.NEW;
 import manager.Storage;
 import model.Epic;
 import model.Subtask;
 import model.Task;
-import static model.Status.NEW;
 
 public class Main {
     public static void main(String[] args) {
         System.out.println("Поехали!");
-        System.out.println("Добро пожаловать в Трекер задач!");
         testCode(); // Тестирование задачи
     }
 
