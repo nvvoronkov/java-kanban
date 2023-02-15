@@ -65,15 +65,15 @@ public abstract class Manager {
         return null;
     }
 
-    Subtask getSubtaskId(int id){
+    Subtask getSubtaskFromId(int id){
         return null;
     }
 
-    Task getTaskId(int id){
+    Task getTaskFromId(int id){
         return null;
     }
 
-    Epic getEpicId(int id){
+    Epic getEpicFromId(int id){
         return null;
     }
 

@@ -166,17 +166,17 @@ public class Storage extends Manager { // Класс для хранения в�
     }
 
     @Override
-    public Task getTaskId(int id) {
+    public Task getTaskFromId(int id) {
         return tasks.get(id);
     }
 
     @Override
-    public Epic getEpicId(int id) {
+    public Epic getEpicFromId(int id) {
         return epics.get(id);
     }
 
     @Override
-    public Subtask getSubtaskId(int id) {
+    public Subtask getSubtaskFromId(int id) {
         return subtasks.get(id);
     }
 }
