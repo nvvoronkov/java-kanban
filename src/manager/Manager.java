@@ -6,39 +6,75 @@ import model.Task;
 
 import java.util.List;
 
-public interface Manager {
+public abstract class Manager {
 
-    void addTask(Task task); // Методы по добавлению задач, эпиков, подзадач
+    void addTask(Task task){   // Методы по добавлению задач, эпиков, подзадач
+    }
 
-    void addEpic(Epic epic);
+    void addEpic(Epic epic){
+    }
 
-    void addSubtask(Subtask subtask);
+    void addSubtask(Subtask subtask){
+    }
 
-    List<Subtask> getListSubtaskEpic(int id); // Метод для получения списка подзадач в эпике
+    List<Subtask> getListSubtaskEpic(int id){ // Метод для получения списка подзадач в эпике
+        return null;
+    }
 
-    void deleteAllTask(); // Методы по удалению всех задач, эпиков, подзадач
+    void deleteAllTask(){     // Методы по удалению всех задач, эпиков, подзадач
+    }
 
-    void deleteAllEpic();
+    void deleteAllEpic(){
+    }
 
-    void deleteAllSubtask();
+    void deleteAllSubtask(){
+    }
 
-    void deleteTaskID(int id); // Методы по удалению определенных задач, эпиков, подзадач по ID
+    void deleteTaskID(int id){   // Методы по удалению определенных задач, эпиков, подзадач по ID
+    }
+    void deleteEpicID(int id){
+    }
 
-    void deleteEpicID(int id);
+    void deleteSubtaskID(int id){
+    }
 
-    void deleteSubtaskID(int id);
+    protected void whatStatusEpic(Epic epic){ // Проверка статуса эпика
+    }
 
-    void checkStatusEpic(int idEpic); // Проверка статуса эпика
+    Task updateTask(Task task){  // Методы по обновлению задач, подзадач, эпиков
+        return task;
+    }
 
-    Task renewalTask(Task task); // Методы по обновлению задач, подзадач, эпиков
+    Epic updateEpic(Epic epic){
+        return epic;
+    }
 
-    Epic renewalEpic(Epic epic);
+    Subtask updateSubtask(Subtask subtask){
+        return subtask;
+    }
 
-    Subtask renewalSubtask(int idEpic, Subtask subtask);
+    List<Task> getTasks(){  // Методы для получения задач, эпиков, подзадач
+        return null;
+    }
 
-    List<Task> getTasks(); // Методы для получения задач, эпиков, подзадач
+    List<Epic> getEpics(){
+        return null;
+    }
 
-    List<Epic> getEpics();
+    List<Subtask> getSubtasks(){
+        return null;
+    }
 
-    List<Subtask> getSubtasks();
+    Subtask getSubtaskId(int id){
+        return null;
+    }
+
+    Task getTaskId(int id){
+        return null;
+    }
+
+    Epic getEpicId(int id){
+        return null;
+    }
+
 }

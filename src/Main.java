@@ -41,8 +41,8 @@ public class Main {
         System.out.println(storage.getTasks());
         System.out.println(storage.getSubtasks());
         System.out.println(storage.getEpics());
-        storage.renewalTask(taskOne);
+        storage.updateTask(taskOne);
         System.out.println(storage.getTasks());
-        storage.checkStatusEpic(6);
+        storage.getListSubtaskEpic(7);
     }
 }
