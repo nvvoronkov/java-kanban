@@ -9,10 +9,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-public class Storage extends Manager { // Класс для хранения всей необходимой информации задач, эпиков, подзадач
+
+public class InMemoryTaskManager implements TaskManager { // Класс для хранения всей необходимой информации задач, эпиков, подзадач
     private final Map<Integer, Task> tasks = new HashMap<>(); // Присвоение соответствия между идентификатором и задачей
     private final Map<Integer, Epic> epics = new HashMap<>();
     private final Map<Integer, Subtask> subtasks = new HashMap<>();
+    private final HistoryManager inMemoryHistoryManager = Manager.getDefaultHistory();
     private int id = 0;
 
     private boolean isSubtaskPresent(int id) {
@@ -44,7 +46,7 @@ public class Storage extends Manager { // Класс для хранения в�
     }
 
     @Override
-    public List<Subtask> getListSubtaskEpic(int id) { // Метод для получения списка подзадач в эпике
+    public List<Subtask> getListSubtasksEpic(int id) { // Метод для получения списка подзадач в эпике
         if (epics.containsKey(id)) {
             List<Subtask> subtask = new ArrayList<>();
             Epic epic = epics.get(id);
@@ -103,7 +105,7 @@ public class Storage extends Manager { // Класс для хранения в�
     }
 
     @Override
-    protected void whatStatusEpic(Epic epic) {
+    public void whatStatusEpic(Epic epic) {
         int subtaskNew = 0;
          int subtaskDone = 0;
          if (epic.getSubtasksId().isEmpty()) {
@@ -166,17 +168,23 @@ public class Storage extends Manager { // Класс для хранения в�
     }
 
     @Override
-    public Task getTaskFromId(int id) {
-        return tasks.get(id);
-    }
-
-    @Override
-    public Epic getEpicFromId(int id) {
+    public Epic getEpicsID(int id) {
         return epics.get(id);
     }
 
     @Override
-    public Subtask getSubtaskFromId(int id) {
+    public Subtask getSubtasksID(int id) {
         return subtasks.get(id);
+    }
+
+    @Override
+    public Task getTasksID(int id) {
+        return tasks.get(id);
+
+    }
+
+    @Override
+     public List<Task> getHistory() {
+        return inMemoryHistoryManager.getHistory();
     }
 }
