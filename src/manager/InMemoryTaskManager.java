@@ -80,12 +80,12 @@ public class InMemoryTaskManager implements TaskManager { // Класс для �
     }
 
     @Override
-    public void deleteTaskID(int id) { // Метод по удалению определенной задачи
+    public void deleteTaskByID(int id) { // Метод по удалению определенной задачи
         tasks.remove(id);
     }
 
     @Override
-    public void deleteEpicID(int id) { // Метод по удалению определенного эпика
+    public void deleteEpicByID(int id) { // Метод по удалению определенного эпика
         List<Integer> subtaskId = epics.get(id).getSubtasksId();
         for (Integer idSubtask : subtaskId) {
             subtasks.remove(idSubtask);
@@ -94,7 +94,7 @@ public class InMemoryTaskManager implements TaskManager { // Класс для �
     }
 
     @Override
-    public void deleteSubtaskID(int id) { // Метод по удалению определенной подзадачи
+    public void deleteSubtaskByID(int id) { // Метод по удалению определенной подзадачи
         if (isSubtaskPresent(id)) {
             int idEpic = subtasks.get(id).getIdEpic();
             Epic epic = epics.get(idEpic);

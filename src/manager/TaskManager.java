@@ -21,11 +21,11 @@ public interface TaskManager {
 
     void deleteAllSubtask();
 
-    void deleteTaskID(int id); // Методы по удалению определенных задач, эпиков, подзадач по ID
+    void deleteTaskByID(int id); // Методы по удалению определенных задач, эпиков, подзадач по ID
 
-    void deleteEpicID(int id);
+    void deleteEpicByID(int id);
 
-    void deleteSubtaskID(int id);
+    void deleteSubtaskByID(int id);
 
     void whatStatusEpic(Epic epic); // Проверка статуса эпика
 
