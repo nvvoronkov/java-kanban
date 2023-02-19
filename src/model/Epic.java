@@ -10,19 +10,19 @@ public class Epic extends Task {
         super(name, description, status);
     }
 
-    public List<Integer> getSubtasksId() {
+    public List<Integer> getSubtasksById() {
         return subtaskId;
     }
 
-    public void addSubtaskId(int idSubtask) { // Методы для добавления, удаления, очистки подзадач в эпике
+    public void addSubtasksById(int idSubtask) { // Методы для добавления, удаления, очистки подзадач в эпике
         subtaskId.add(idSubtask);
     }
 
-    public void deleteSubtaskId(int idSubtask) {
+    public void deleteSubtasksById(int idSubtask) {
         subtaskId.remove(Integer.valueOf(idSubtask));
     }
 
-    public void deleteAllSubtaskId() {
+    public void deleteAllSubtasksById() {
         subtaskId.clear();
     }
 
