@@ -43,10 +43,10 @@ public interface TaskManager {
 
     List<Task> getHistory(); // Метод, возвращающий 10 последних просмотренных задач
 
-    Task getTasksID(int id);
+    Task getTasksByID(int id);
 
-    Epic getEpicsID(int id);
+    Epic getEpicsByID(int id);
 
-    Subtask getSubtasksID(int id);
+    Subtask getSubtasksByID(int id);
 
 }
