@@ -26,22 +26,22 @@ public class Main {
         inMemoryTaskManager.addSubtask(subtaskTwo);
         inMemoryTaskManager.addEpic(epicTwo);
         inMemoryTaskManager.addSubtask(subtaskThree);
-        inMemoryTaskManager.getTasksByID(1);
+        inMemoryTaskManager.getTasksById(1);
         System.out.println(inMemoryTaskManager.getHistory());
-        inMemoryTaskManager.getEpicsByID(6);
+        inMemoryTaskManager.getEpicsById(6);
         System.out.println(inMemoryTaskManager.getHistory());
-        inMemoryTaskManager.getSubtasksByID(7);
+        inMemoryTaskManager.getSubtasksById(7);
         System.out.println(inMemoryTaskManager.getHistory());
-        inMemoryTaskManager.getEpicsByID(6);
-        inMemoryTaskManager.getEpicsByID(6);
-        inMemoryTaskManager.getEpicsByID(6);
-        inMemoryTaskManager.getEpicsByID(6);
-        inMemoryTaskManager.getEpicsByID(6);
-        inMemoryTaskManager.getEpicsByID(6);
-        inMemoryTaskManager.getEpicsByID(6);
-        inMemoryTaskManager.getEpicsByID(6);
+        inMemoryTaskManager.getEpicsById(6);
+        inMemoryTaskManager.getEpicsById(6);
+        inMemoryTaskManager.getEpicsById(6);
+        inMemoryTaskManager.getEpicsById(6);
+        inMemoryTaskManager.getEpicsById(6);
+        inMemoryTaskManager.getEpicsById(6);
+        inMemoryTaskManager.getEpicsById(6);
+        inMemoryTaskManager.getEpicsById(6);
         System.out.println(inMemoryTaskManager.getHistory());
-        inMemoryTaskManager.getSubtasksByID(7);
+        inMemoryTaskManager.getSubtasksById(7);
         System.out.println(inMemoryTaskManager.getHistory());
     }
 }
