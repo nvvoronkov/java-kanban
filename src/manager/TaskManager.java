@@ -21,11 +21,11 @@ public interface TaskManager {
 
     void deleteAllSubtask();
 
-    void deleteTaskByID(int id); // Методы по удалению определенных задач, эпиков, подзадач по ID
+    void deleteTaskById(int id); // Методы по удалению определенных задач, эпиков, подзадач по ID
 
-    void deleteEpicByID(int id);
+    void deleteEpicById(int id);
 
-    void deleteSubtaskByID(int id);
+    void deleteSubtaskById(int id);
 
     void whatStatusEpic(Epic epic); // Проверка статуса эпика
 
@@ -43,10 +43,10 @@ public interface TaskManager {
 
     List<Task> getHistory(); // Метод, возвращающий 10 последних просмотренных задач
 
-    Task getTasksByID(int id);
+    Task getTasksById(int id);
 
-    Epic getEpicsByID(int id);
+    Epic getEpicsById(int id);
 
-    Subtask getSubtasksByID(int id);
+    Subtask getSubtasksById(int id);
 
 }
