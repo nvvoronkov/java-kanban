@@ -6,7 +6,10 @@ import model.Task;
 
 public class Main {
     public static void main(String[] args) {
+        System.out.println(" ");
+        System.out.println("******** Вас приветствуюет трекер задач ********");
         System.out.println("Поехали!");
+        System.out.println("---------------------------------------------------------------------------");
         testCode(); // Тестирование задачи
     }
 

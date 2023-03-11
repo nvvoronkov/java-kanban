@@ -24,4 +24,9 @@ public class InMemoryHistoryManager implements HistoryManager { /* Класс д
     public List<Task> getHistory() { // Метод, возвращающий 10 последних просмотренных задач списком
         return tasks;
     }
+
+    @Override
+    public void remove(int id) {
+        tasks.remove(id);
+    }
 }
