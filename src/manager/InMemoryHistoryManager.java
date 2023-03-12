@@ -1,32 +1,28 @@
 package manager;
 
-import model.Task;
-
-import java.util.ArrayList;
 import java.util.List;
+
+import model.Task;
 
 public class InMemoryHistoryManager implements HistoryManager { /* Класс для работы с историей,
     перенос функционала из InMemoryTaskManager, реализует интерфейс HistoryManager */
-    private final List<Task> tasks = new ArrayList<>(); // Список задач
-    private final int dimension = 10; // Кол-во выводимых задач дб не более 10
+    private final CustomLinkedList<Task> list = new CustomLinkedList<>();
 
     @Override
-    public void add(Task task) { // Метод, который помечает задачи как просмотренные
-        if (tasks != null) { // Добавляем проверку на null для всего кода
-            if (tasks.size() == dimension) {
-                tasks.remove(0); // Удаляем самую старую задачу, если размер списка больше 10
-            }
-            tasks.add(task);
+    public void add(Task task) {
+        if (task != null) {
+            list.removeById(task.getId());
+            list.linkLast(task);
         }
     }
 
     @Override
     public List<Task> getHistory() { // Метод, возвращающий 10 последних просмотренных задач списком
-        return tasks;
+        return list.getTasks();
     }
 
     @Override
     public void remove(int id) {
-        tasks.remove(id);
+        list.removeById(id);
     }
 }

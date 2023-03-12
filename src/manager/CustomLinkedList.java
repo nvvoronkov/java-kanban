@@ -1,15 +1,20 @@
 package manager;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 import model.Task;
 
+/*
 final class CustomLinkedList {
     private final Node tail;
-    private final Node head; 
+    private final Node head;
 
     public CustomLinkedList() {
-        this.tail = new Node(-1);
-        this.head = new Node(-1);
+        this.tail = new Node(null, -1, null);
+        this.head = new Node(null, -1, null);
 
         tail.prev = head;
         head.next = tail;
@@ -18,38 +23,36 @@ final class CustomLinkedList {
     final class Node {
         private Node prev;
         private Node next;
-        private final int taskId;
-    
-        public Node(int taskId) { 
-            this.taskId = taskId;
+        private final int id;
+
+        public Node(Node prev, int id, Node next) {
+            this.id = id;
         }
-    
+
     }
 
-    public void addLast(int taskId) {
-        Node newNode = new Node(taskId); 
+    public void addLast(int id) {
+        Node newNode = new Node(tail.prev, id, tail);
         tail.prev = newNode;
     }
 
     public void remove(Node nodeToRemove) {
-        nodeToRemove.prev.next = null;
-        nodeToRemove.next.prev = null;
         nodeToRemove.prev.next = nodeToRemove.next;
-        nodeToRemove.next.prev = nodeToRemove.prev; 
+        nodeToRemove.next.prev = nodeToRemove.prev;
         nodeToRemove.next = null;
         nodeToRemove.prev = null;
     }
 }
+ */
 
-/* 
-public class CustomLinkedList<T extends Task> { 
+public class CustomLinkedList<T extends Task> {
     private final Map<Integer, Node<T>> mapToList = new HashMap<>();  // В ключах будут храниться id задач, а в значениях — узлы связного списка. С помощью номера задачи можно получить соответствующий ему узел связного списка и удалить его
-    private int size = 0; 
-    private Node<T> head; 
+    private int size = 0;
+    private Node<T> head;
     private Node<T> tail;
 
-    private static class Node<T> { 
-        T item; 
+    private static class Node<T> {
+        T item;
         Node<T> next;
         Node<T> prev;
 
@@ -75,7 +78,7 @@ public class CustomLinkedList<T extends Task> {
 
 
     public List<T> getTasks() { // Метод собирает все задачи из списка в обычный ArrayList
-        List<T> tasks = new ArrayList<>(); 
+        List<T> tasks = new ArrayList<>();
         Node<T> newNode = head;
         while (newNode != null) {
             tasks.add(newNode.item);
@@ -106,13 +109,7 @@ public class CustomLinkedList<T extends Task> {
         }
     }
 
-    public void removeId(int id) {
+    public void removeById(int id) {
         removeNode(mapToList.remove(id));
     }
 }
-
-
-
-
-
- */
