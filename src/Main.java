@@ -1,6 +1,5 @@
 import static model.Status.NEW;
 
-import manager.HistoryManager;
 import manager.Manager;
 import manager.TaskManager;
 import model.Epic;
@@ -19,9 +18,8 @@ public class Main {
 
     private static void testCode() {
         
-        HistoryManager inMemoryHistoryManager = Manager.getDefaultHistory();
-        TaskManager manager = Manager.getDefault();
-
+        TaskManager taskManager = Manager.getDefault();
+       
         // Task taskOne = new Task("Задача №1", "Описание задачи №1", NEW);
         // Task taskTwo = new Task("Задача №2", "Описание задачи №2", NEW);
         // Epic epicOne = new Epic("Большая задача (эпик) №1", "Описание задачи №1", NEW);
@@ -31,37 +29,32 @@ public class Main {
         // Epic epicTwo = new Epic("Большая задача (эпик) №5", "Описание задачи №5", NEW);
 
 
-        manager.addTask(new Task("Задача №1", "Описание задачи №1", NEW));
-        manager.addTask(new Task("Задача №2", "Описание задачи №2", NEW));
-        manager.getTasksById(1);
-        manager.getTasksById(2);
-        manager.addEpic(new Epic("Большая задача (эпик) №1", "Описание задачи №1", NEW));
-        manager.getEpicsById(3);
-        manager.addSubtask(new Subtask("Подзадача №2", "Описание подзадачи №2", NEW, 3));
-        manager.addSubtask(new Subtask("Подзадача №3", "Описание подзадачи №3", NEW, 3));
-        manager.addSubtask(new Subtask("Подзадача №4", "Описание подзадачи №4", NEW, 3));
-        manager.getSubtasksById(3);
-        manager.getSubtasksById(3);
-        manager.getSubtasksById(3);
-        manager.addEpic(new Epic("Большая задача (эпик) №5", "Описание задачи №5", NEW));
-        manager.getEpicsById(7);
-
-        // inMemoryHistoryManager.add(taskOne);
-        // inMemoryHistoryManager.add(taskTwo);
-        // inMemoryHistoryManager.add(epicOne);
-        // inMemoryHistoryManager.add(epicTwo);
+        taskManager.addTask(new Task("Задача №1", "Описание задачи №1", NEW));
+        taskManager.addTask(new Task("Задача №2", "Описание задачи №2", NEW));
+        taskManager.getTasksById(1);
+        taskManager.getTasksById(2);
+        taskManager.addEpic(new Epic("Большая задача (эпик) №1", "Описание задачи №1", NEW));
+        taskManager.getEpicsById(3);
+        taskManager.addSubtask(new Subtask("Подзадача №2", "Описание подзадачи №2", NEW, 3));
+        taskManager.addSubtask(new Subtask("Подзадача №3", "Описание подзадачи №3", NEW, 3));
+        taskManager.addSubtask(new Subtask("Подзадача №4", "Описание подзадачи №4", NEW, 3));
+        taskManager.getSubtasksById(3);
+        taskManager.getSubtasksById(3);
+        taskManager.getSubtasksById(3);
+        taskManager.addEpic(new Epic("Большая задача (эпик) №5", "Описание задачи №5", NEW));
+        taskManager.getEpicsById(7);
     
-        System.out.println(manager.getHistory());
+        System.out.println(taskManager.getHistory());
         System.out.println(" ");
-        inMemoryHistoryManager.remove(3);
-        System.out.println(manager.getHistory());
+        taskManager.deleteEpicById(3);
+        System.out.println(taskManager.getHistory());
         System.out.println(" ");
-        manager.getTasksById(1);
-        manager.getTasksById(2);
-        manager.deleteTaskById(2);
-        System.out.println(manager.getHistory());
+        taskManager.getTasksById(1);
+        taskManager.getTasksById(2);
+        taskManager.deleteTaskById(2);
+        System.out.println(taskManager.getHistory());
         System.out.println(" ");
-        manager.deleteAllTask();
-        System.out.println(manager.getHistory());
+        taskManager.deleteAllTask();
+        System.out.println(taskManager.getHistory());
     }
 }
