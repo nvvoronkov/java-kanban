@@ -1,5 +1,8 @@
 import static model.Status.NEW;
-import manager.InMemoryTaskManager;
+
+import manager.HistoryManager;
+import manager.Manager;
+import manager.TaskManager;
 import model.Epic;
 import model.Subtask;
 import model.Task;
@@ -11,40 +14,51 @@ public class Main {
         System.out.println("Поехали!");
         System.out.println("---------------------------------------------------------------------------");
         testCode(); // Тестирование задачи
+        System.out.println("---------------------------------------------------------------------------");
     }
 
-    private static void testCode() { // Проверка работы приложения
-        InMemoryTaskManager inMemoryTaskManager = new InMemoryTaskManager();
+    private static void testCode() {
+        HistoryManager inMemoryHistoryManager = Manager.getDefaultHistory();
+        TaskManager manager = Manager.getDefault();
+
         Task taskOne = new Task("Задача №1", "Описание задачи №1", NEW);
         Task taskTwo = new Task("Задача №2", "Описание задачи №2", NEW);
-        Epic epicOne = new Epic("Большая задача (эпик) №3", "Описание задачи №3", NEW);
-        Subtask subtaskOne = new Subtask("Подзадача №4", "Описание подзадачи №4", NEW, 3);
-        Subtask subtaskTwo = new Subtask("Подзадача №5", "Описание подзадачи №5", NEW, 3);
-        Epic epicTwo = new Epic("Большая задача (эпик) №6", "Описание задачи №6", NEW);
-        Subtask subtaskThree = new Subtask("Подзадача №7", "Описание подзадачи №7", NEW, 6);
-        inMemoryTaskManager.addTask(taskOne); // Внесение всех задач, эпиков, подзадач
-        inMemoryTaskManager.addTask(taskTwo);
-        inMemoryTaskManager.addEpic(epicOne);
-        inMemoryTaskManager.addSubtask(subtaskOne);
-        inMemoryTaskManager.addSubtask(subtaskTwo);
-        inMemoryTaskManager.addEpic(epicTwo);
-        inMemoryTaskManager.addSubtask(subtaskThree);
-        inMemoryTaskManager.getTasksById(1);
-        System.out.println(inMemoryTaskManager.getHistory());
-        inMemoryTaskManager.getEpicsById(6);
-        System.out.println(inMemoryTaskManager.getHistory());
-        inMemoryTaskManager.getSubtasksById(7);
-        System.out.println(inMemoryTaskManager.getHistory());
-        inMemoryTaskManager.getEpicsById(6);
-        inMemoryTaskManager.getEpicsById(6);
-        inMemoryTaskManager.getEpicsById(6);
-        inMemoryTaskManager.getEpicsById(6);
-        inMemoryTaskManager.getEpicsById(6);
-        inMemoryTaskManager.getEpicsById(6);
-        inMemoryTaskManager.getEpicsById(6);
-        inMemoryTaskManager.getEpicsById(6);
-        System.out.println(inMemoryTaskManager.getHistory());
-        inMemoryTaskManager.getSubtasksById(7);
-        System.out.println(inMemoryTaskManager.getHistory());
+        Epic epicOne = new Epic("Большая задача (эпик) №1", "Описание задачи №1", NEW);
+        Subtask subtaskOne = new Subtask("Подзадача №2", "Описание подзадачи №2", NEW, 1);
+        Subtask subtaskTwo = new Subtask("Подзадача №3", "Описание подзадачи №3", NEW, 1);
+        Subtask subtaskThree = new Subtask("Подзадача №4", "Описание подзадачи №4", NEW, 1);
+        Epic epicTwo = new Epic("Большая задача (эпик) №5", "Описание задачи №5", NEW);
+
+
+        manager.addTask(taskOne);
+        manager.addTask(taskTwo);
+        manager.addEpic(epicOne);
+        manager.addSubtask(subtaskOne);
+        manager.addSubtask(subtaskTwo);
+        manager.addSubtask(subtaskThree);
+        manager.addEpic(epicTwo);
+
+        inMemoryHistoryManager.add(taskOne);
+        inMemoryHistoryManager.add(taskTwo);
+        inMemoryHistoryManager.add(epicOne);
+        inMemoryHistoryManager.add(epicTwo);
+        System.out.println(inMemoryHistoryManager.getHistory());
+        System.out.println(" ");
+        inMemoryHistoryManager.add(epicOne);
+        System.out.println(inMemoryHistoryManager.getHistory()); // После запросов выводим историю и смотрим, что в ней нет повторо
+        System.out.println(" ");
+        inMemoryHistoryManager.remove(7);
+        System.out.println(inMemoryHistoryManager.getHistory());
+        System.out.println(" ");
+        manager.getTasksById(1);
+        manager.getTasksById(2);
+        manager.deleteTaskById(2);
+        System.out.println(manager.getHistory());
+        manager.getEpicsById(3);
+        manager.getEpicsById(3);
+        System.out.println(manager.getHistory());
+        System.out.println(" ");
+        manager.deleteAllTask();
+        System.out.println(manager.getHistory());
     }
 }
