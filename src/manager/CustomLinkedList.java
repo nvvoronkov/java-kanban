@@ -37,7 +37,7 @@ public class CustomLinkedList<T extends Task> {
     }
 
 
-    public List<T> getTasks() { // Метод собирает все задачи из списка в обычный ArrayList
+    public List<T> getTasks() { // Метод собирает все задачи из списка в LinkedList
         List<T> tasks = new LinkedList<>();
         Node<T> newNode = head;
         while (newNode != null) {

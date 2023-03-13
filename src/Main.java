@@ -33,7 +33,7 @@ public class Main {
         taskManager.addTask(new Task("Задача №2", "Описание задачи №2", NEW));
         taskManager.getTasksById(1);
         taskManager.getTasksById(2);
-        taskManager.addEpic(new Epic("Большая задача (эпик) №1", "Описание задачи №1", NEW));
+        taskManager.addEpic(new Epic("Большая задача (эпик) №1", "Описание задачи №1"));
         taskManager.getEpicsById(3);
         taskManager.addSubtask(new Subtask("Подзадача №2", "Описание подзадачи №2", NEW, 3));
         taskManager.addSubtask(new Subtask("Подзадача №3", "Описание подзадачи №3", NEW, 3));
@@ -41,7 +41,7 @@ public class Main {
         taskManager.getSubtasksById(3);
         taskManager.getSubtasksById(3);
         taskManager.getSubtasksById(3);
-        taskManager.addEpic(new Epic("Большая задача (эпик) №5", "Описание задачи №5", NEW));
+        taskManager.addEpic(new Epic("Большая задача (эпик) №5", "Описание задачи №5"));
         taskManager.getEpicsById(7);
     
         System.out.println(taskManager.getHistory());
