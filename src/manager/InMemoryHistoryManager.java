@@ -1,7 +1,6 @@
 package manager;
 
 import java.util.List;
-
 import model.Task;
 
 public class InMemoryHistoryManager implements HistoryManager { /* Класс для работы с историей,

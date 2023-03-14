@@ -83,6 +83,7 @@ public class InMemoryTaskManager implements TaskManager { // Класс для �
         subtasks.clear();
         for (Epic epic: epics.values()) {
             epic.deleteAllSubtasksById();
+            epic.setStatus(Status.NEW);
         }
     }
 
@@ -208,10 +209,5 @@ public class InMemoryTaskManager implements TaskManager { // Класс для �
     @Override
      public List<Task> getHistory() {
         return historyManager.getHistory();
-    }
-
-    @Override
-    public void whatStatusEpic(Epic epic) {
-        throw new UnsupportedOperationException("Unimplemented method 'whatStatusEpic'");
     }
 }

@@ -27,8 +27,6 @@ public interface TaskManager {
 
     void deleteSubtaskById(int id);
 
-    void whatStatusEpic(Epic epic); // Проверка статуса эпика
-
     Task updateTask(Task task); // Методы по обновлению задач, подзадач, эпиков
 
     Epic updateEpic(Epic epic);
