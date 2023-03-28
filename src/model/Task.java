@@ -5,11 +5,13 @@ public class Task {
     private String description; // Описание задачи
     private int id; // Уникальный идентификационный номер задачи
     private Status status; // Статус задачи: NEW, IN_PROGRESS, DONE
+    private Type type; // Тип задачи: Task, Epic, Subtask
 
-    public Task(String name, String description, Status status) {
+    public Task(String name, String description, Status status, Type type) {
         this.name = name;
         this.description = description;
         this.status = status;
+        this.type = type;
     }
 
     public String getName() {
@@ -42,6 +44,14 @@ public class Task {
 
     public void setStatus(Status status) {
         this.status = status;
+    }
+
+    public Type getType() {
+        return type;
+    }
+
+    public void setType(Type type) {
+        this.type = type;
     }
 
     @Override

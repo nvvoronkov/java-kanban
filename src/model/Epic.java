@@ -6,8 +6,8 @@ import java.util.List;
 public class Epic extends Task {
     private final List<Integer> subtaskId = new ArrayList<>();// Список идентификаторов в эпике
 
-    public Epic(String name, String description) {
-        super(name, description, Status.NEW);
+    public Epic(String name, String description, Type type) {
+        super(name, description, Status.NEW, type);
     }
 
     public List<Integer> getSubtasksById() {

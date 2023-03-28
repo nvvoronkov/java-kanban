@@ -5,6 +5,7 @@ import manager.TaskManager;
 import model.Epic;
 import model.Subtask;
 import model.Task;
+import model.Type;
 
 public class Main {
     public static void main(String[] args) {
@@ -28,20 +29,19 @@ public class Main {
         // Subtask subtaskThree = new Subtask("Подзадача №4", "Описание подзадачи №4", NEW, 1);
         // Epic epicTwo = new Epic("Большая задача (эпик) №5", "Описание задачи №5", NEW);
 
-
-        taskManager.addTask(new Task("Задача №1", "Описание задачи №1", NEW));
-        taskManager.addTask(new Task("Задача №2", "Описание задачи №2", NEW));
+        taskManager.addTask(new Task("Задача №1", "Описание задачи №1", NEW, Type.TASK));
+        taskManager.addTask(new Task("Задача №2", "Описание задачи №2", NEW, Type.TASK));
         taskManager.getTasksById(1);
         taskManager.getTasksById(2);
-        taskManager.addEpic(new Epic("Большая задача (эпик) №1", "Описание задачи №1"));
+        taskManager.addEpic(new Epic("Большая задача (эпик) №1", "Описание задачи №1", Type.EPIC));
         taskManager.getEpicsById(3);
-        taskManager.addSubtask(new Subtask("Подзадача №2", "Описание подзадачи №2", NEW, 3));
-        taskManager.addSubtask(new Subtask("Подзадача №3", "Описание подзадачи №3", NEW, 3));
-        taskManager.addSubtask(new Subtask("Подзадача №4", "Описание подзадачи №4", NEW, 3));
+        taskManager.addSubtask(new Subtask("Подзадача №2", "Описание подзадачи №2", NEW, Type.SUBTASK, 3));
+        taskManager.addSubtask(new Subtask("Подзадача №3", "Описание подзадачи №3", NEW, Type.SUBTASK, 3));
+        taskManager.addSubtask(new Subtask("Подзадача №4", "Описание подзадачи №4", NEW, Type.SUBTASK, 3));
         taskManager.getSubtasksById(3);
         taskManager.getSubtasksById(3);
         taskManager.getSubtasksById(3);
-        taskManager.addEpic(new Epic("Большая задача (эпик) №5", "Описание задачи №5"));
+        taskManager.addEpic(new Epic("Большая задача (эпик) №5", "Описание задачи №5", Type.EPIC));
         taskManager.getEpicsById(7);
     
         System.out.println(taskManager.getHistory());
