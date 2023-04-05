@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,10 +36,16 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         System.out.println(manager.getHistory());
     }
 
+    @Override 
+    public void addTask(Task task) {
+        super.addTask(task);
+        save();
+    }
+
     @Override
     public void addEpic(Epic epic) {
-        // TODO Auto-generated method stub
         super.addEpic(epic);
+        save();
     }
 
     @Override
@@ -48,117 +55,101 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
     }
 
     @Override
-    public void addTask(Task task) {
-        // TODO Auto-generated method stub
-        super.addTask(task);
-    }
-
-    @Override
-    public void deleteAllEpic() {
-        // TODO Auto-generated method stub
-        super.deleteAllEpic();
-    }
-
-    @Override
-    public void deleteAllSubtask() {
-        // TODO Auto-generated method stub
-        super.deleteAllSubtask();
-    }
-
-    @Override
-    public void deleteAllTask() {
-        // TODO Auto-generated method stub
-        super.deleteAllTask();
-    }
-
-    @Override
-    public void deleteEpicById(int id) {
-        // TODO Auto-generated method stub
-        super.deleteEpicById(id);
-    }
-
-    @Override
-    public void deleteSubtaskById(int id) {
-        // TODO Auto-generated method stub
-        super.deleteSubtaskById(id);
-    }
-
-    @Override
-    public void deleteTaskById(int id) {
-        // TODO Auto-generated method stub
-        super.deleteTaskById(id);
-    }
-
-    @Override
-    public List<Epic> getEpics() {
-        // TODO Auto-generated method stub
-        return super.getEpics();
-    }
-
-    @Override
-    public Epic getEpicsById(int id) {
-        // TODO Auto-generated method stub
-        return super.getEpicsById(id);
-    }
-
-    @Override
-    public List<Task> getHistory() {
-        // TODO Auto-generated method stub
-        return super.getHistory();
-    }
-
-    @Override
     public List<Subtask> getListSubtasksEpic(int id) {
-        // TODO Auto-generated method stub
         return super.getListSubtasksEpic(id);
     }
 
     @Override
-    public List<Subtask> getSubtasks() {
-        // TODO Auto-generated method stub
-        return super.getSubtasks();
+    public void deleteAllTask() {
+        super.deleteAllTask();
+        save();
     }
 
     @Override
-    public Subtask getSubtasksById(int id) {
-        // TODO Auto-generated method stub
-        return super.getSubtasksById(id);
+    public void deleteAllEpic() {
+        super.deleteAllEpic();
+        save();
     }
 
     @Override
-    public List<Task> getTasks() {
-        // TODO Auto-generated method stub
-        return super.getTasks();
+    public void deleteAllSubtask() {
+        super.deleteAllSubtask();
+        save();
     }
 
     @Override
-    public Task getTasksById(int id) {
-        // TODO Auto-generated method stub
-        return super.getTasksById(id);
+    public void deleteTaskById(int id) {
+        super.deleteTaskById(id);
+        save();
+    }
+
+    @Override
+    public void deleteEpicById(int id) {
+        super.deleteEpicById(id);
+        save();
+    }
+
+    @Override
+    public void deleteSubtaskById(int id) {
+        super.deleteSubtaskById(id);
+        save();
+    }
+
+    @Override
+    public Task updateTask(Task task) {
+        return super.updateTask(task);
     }
 
     @Override
     public Epic updateEpic(Epic epic) {
-        // TODO Auto-generated method stub
         return super.updateEpic(epic);
     }
 
     @Override
     public Subtask updateSubtask(Subtask subtask) {
-        // TODO Auto-generated method stub
         return super.updateSubtask(subtask);
     }
 
     @Override
-    public Task updateTask(Task task) {
-        // TODO Auto-generated method stub
-        return super.updateTask(task);
+    public List<Task> getTasks() {
+        return super.getTasks();
+    }
+
+    @Override
+    public List<Epic> getEpics() {
+        return super.getEpics();
+    }
+
+    @Override
+    public List<Subtask> getSubtasks() {
+        return super.getSubtasks();
+    }
+
+    @Override
+    public Task getTasksById(int id) {
+        return super.getTasksById(id);
+    }
+
+    @Override
+    public Epic getEpicsById(int id) {
+        return super.getEpicsById(id);
+    }
+
+    @Override
+    public Subtask getSubtasksById(int id) {
+        return super.getSubtasksById(id);
+    }
+
+    @Override
+    public List<Task> getHistory() {
+        return super.getHistory();
     }
 
     public void save() { 
         if (!file.exists()) {
             System.out.println("Данный файл не существует.");
-            try (BufferedWriter fileWriter = new BufferedWriter(new FileWriter(file))) {
+            try (BufferedWriter fileWriter = new BufferedWriter(new FileWriter(file, 
+                                                StandardCharsets.UTF_8))) {
                 fileWriter.write("id,type,name,status,description,epic");
                 for (Task task : getTasks()) {
                     fileWriter.write(toString(task));
@@ -231,10 +222,12 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         return history.toString();
     }
 
-    static List<Integer> historyFromString(String value) {
+    static List<Integer> historyFromString(String value, FileBackedTasksManager manager) {
         List<Integer> history = new ArrayList<>();
-        for (String string : value.split(",")) {
-            history.add(Integer.valueOf(string));
+        String[] items = value.split(",");
+        for (int i = 0; i < items.length; i++) {
+            int id = Integer.valueOf(items[0]);
+            history.add(id);
         }
         return history;
     }
@@ -245,11 +238,10 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
     public static FileBackedTasksManager loadFromFile(File file) throws ManagerSaveException {
         FileBackedTasksManager manager = new FileBackedTasksManager(file);
         try (BufferedReader br = new BufferedReader(new FileReader(file))) {
-            br.readLine();
-            while (br.ready()) {
-                String line = br.readLine();
-                if (!line.isEmpty()) {
-                    Task task = fromString(line);
+            String taskFromString = br.readLine();
+            while (!(taskFromString = br.readLine()).equals("")) {
+                Task task = fromString(taskFromString);
+                if (!taskFromString.isEmpty()) {
                     if (task != null) {
                         switch (task.getType()) {
                             case TASK:
@@ -263,7 +255,8 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
                                 break;
                         }
                     }
-                    historyFromString(line);
+                } else {
+                    historyFromString(taskFromString, manager);
                 }
             }
         } catch (IOException exception) {
