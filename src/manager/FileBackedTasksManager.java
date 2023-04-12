@@ -10,30 +10,37 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
+import exception.ManagerSaveException;
 import model.Epic;
-import model.ManagerSaveException;
 import model.Status;
 import model.Subtask;
 import model.Task;
 import model.Type;
 
-import static model.Status.DONE;
-import static model.Status.NEW;
 import static model.Type.*;
 
 public class FileBackedTasksManager extends InMemoryTaskManager {
-    private File file = new File("src/model/file.csv");
+    private File file = new File("src/resources/file.csv");
 
     public FileBackedTasksManager(File file) {
         this.file = file;
     }
 
     public static void main(String[] args) {
-        TaskManager manager = loadFromFile(new File("src/model/file.csv"));
+        System.out.println();
+        /* TaskManager manager = loadFromFile(new File("src/resources/file.csv"));
         manager.addTask(new Task("Task1", "Description task1", NEW, TASK));
         manager.addEpic(new Epic("Epic2", "Description epic2", EPIC));
         manager.addSubtask(new Subtask("Subtask2", "Description subtask3", DONE, SUBTASK, 2));
-        System.out.println(manager.getHistory());
+        System.out.println(manager.getHistory()); */
+        File file = new File("src/resources/file.csv");
+        FileBackedTasksManager secondManager = loadFromFile(file); // Создаем новый FileBackedTasksManager менеджер из этого же файла
+        System.out.println(secondManager.getTasks());
+        System.out.println(secondManager.getEpics());
+        System.out.println(secondManager.getSubtasks());
+        System.out.println();
+        System.out.println("История второго менеджера:" + secondManager.getHistory()); //Печатаем историю второго менеджера
+        System.out.println();
     }
 
     @Override 
@@ -190,25 +197,23 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         String name = split[2];
         Status status = Status.valueOf(split[3]);
         String description = split[4];
-        int idEpic = 0;
-        if (split.length > 5) {
-            idEpic = Integer.parseInt(split[5]);
-        }
         Task task = null;
 
-        switch (Type.valueOf(split[1])) {
+        switch (type) {
             case TASK:
                 task = new Task(description, name, status, type);
                 task.setId(id);
-                break;
+                return task;
             case EPIC:
-                task = new Epic(description, name, type);
-                task.setId(id);
-                break;
+                Epic epic = new Epic(description, name, type);
+                epic.setId(id);
+                return epic;
             case SUBTASK:
-                task = new Subtask(description, name, status, type, idEpic);
-                task.setId(id);
-                break;
+                int idEpic = Integer.parseInt(split[5]);
+                Subtask subtask = new Subtask(description, name, status, type, idEpic);
+                subtask.setId(id);
+                subtask.setId(idEpic);
+                return subtask;
         }
         return task;
         
@@ -219,10 +224,13 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         for (Task task : manager.getHistory()) {
             history.append(task.getId()).append(",");
         }
+        if (history.length() != 0) {
+            history.deleteCharAt(history.length() - 1);
+        }
         return history.toString();
     }
 
-    static List<Integer> historyFromString(String value, FileBackedTasksManager manager) {
+    static List<Integer> historyFromString(String value) {
         List<Integer> history = new ArrayList<>();
         String[] items = value.split(",");
         for (int i = 0; i < items.length; i++) {
@@ -231,18 +239,15 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         }
         return history;
     }
-/*
- * Подскажите, пожалуйста, в чем моя ошибка
- * Я не очень понимаю какая логика должна быть между loadFromFile() и historyFromString()
- */
-    public static FileBackedTasksManager loadFromFile(File file) throws ManagerSaveException {
+
+    public static FileBackedTasksManager loadFromFile(File file) {
         FileBackedTasksManager manager = new FileBackedTasksManager(file);
         try (BufferedReader br = new BufferedReader(new FileReader(file))) {
-            String taskFromString = br.readLine();
-            while (!(taskFromString = br.readLine()).equals("")) {
-                Task task = fromString(taskFromString);
-                if (!taskFromString.isEmpty()) {
-                    if (task != null) {
+            while (br.ready()) {
+                String line = br.readLine();
+                if (!line.isEmpty()) {
+                    if (line.contains("TASK") || line.contains("EPIC") || line.contains("SUBTASK")) { 
+                        Task task = fromString(line);
                         switch (task.getType()) {
                             case TASK:
                                 manager.addTask(task);
@@ -254,15 +259,19 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
                                 manager.addSubtask((Subtask) task);
                                 break;
                         }
+                    } else if (!line.isBlank() && (!line.startsWith("id"))) { 
+                        List<Integer> history = historyFromString(line);
+                        for (Integer id : history) {
+                            manager.getTasksById(id);
+                            manager.getSubtasksById(id);
+                            manager.getEpicsById(id);
+                        }
                     }
-                } else {
-                    historyFromString(taskFromString, manager);
                 }
             }
         } catch (IOException exception) {
             throw new ManagerSaveException("Не удалось сохранить данные.", exception);
         }
-        manager.save();
         return manager;
-    } 
+    }
 }
