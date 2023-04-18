@@ -1,13 +1,17 @@
 package model;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Epic extends Task {
     private final List<Integer> subtaskId = new ArrayList<>();// Список идентификаторов в эпике
+    private LocalDateTime endTime;
 
-    public Epic(String name, String description, Type type) {
-        super(name, description, Status.NEW, type);
+    public Epic(String name, String description, Status status) {
+        super(name, description, status);
+        this.endTime = getEndTime();
+        setType(Type.EPIC);
     }
 
     public List<Integer> getSubtasksById() {
@@ -26,6 +30,14 @@ public class Epic extends Task {
         subtaskId.clear();
     }
 
+    public LocalDateTime getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(LocalDateTime endTime) {
+        this.endTime = endTime;
+    }
+
     @Override
     public String toString() {
         return "Epic{" +
@@ -33,6 +45,8 @@ public class Epic extends Task {
         ", description='" + getDescription() + '\'' +
         ", status=" + getStatus() +
         ", subtaskId=" + subtaskId +
-        ", id=" + getId() + '}';
+        ", id=" + getId() +
+        ", startTime=" + getStartTime() + 
+        ", duration=" + getDuration() + "}";
     }
 }

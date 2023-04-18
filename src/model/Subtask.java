@@ -1,10 +1,19 @@
 package model;
 
+import java.time.LocalDateTime;
+
 public class Subtask extends Task {
     private final int idEpic; // Определяем ID по эпику, к которому относится
 
-    public Subtask(String name, String description, Status status, Type type, int idEpic) {
-        super(name, description, status, type);
+    public Subtask(String name, String description, Status status, Type type, 
+                   LocalDateTime startTime, long duration, int idEpic) {
+        super(name, description, status, type, startTime, duration);
+        this.idEpic = idEpic;
+        setType(Type.SUBTASK);
+    }
+
+    public Subtask(String name, String description, Status status, int idEpic) {
+        super(name, description, status);
         this.idEpic = idEpic;
     }
 
@@ -19,6 +28,9 @@ public class Subtask extends Task {
         ", name='" + getName() + '\'' +
         ", description='" + getDescription() + '\'' +
         ", status='" + getStatus() + '\'' +
-        ", idEpic=" + idEpic + '}';
+        ", type='" + getType() + '\'' +
+        ", startTime='" + getStartTime() + '\'' +
+        ", duration='" + getDuration() + '\'' +
+        ", idEpic=" + getIdEpic() + '}';
     }
 }

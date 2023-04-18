@@ -1,17 +1,31 @@
 package model;
 
+import java.time.LocalDateTime;
+
 public class Task {
     private String name; // Наименование задачи
     private String description; // Описание задачи
     private int id; // Уникальный идентификационный номер задачи
     private Status status; // Статус задачи: NEW, IN_PROGRESS, DONE
     private Type type; // Тип задачи: Task, Epic, Subtask
+    private LocalDateTime startTime; //Cтарт задачи
+    private long duration; // Продолжительность задачи
 
-    public Task(String name, String description, Status status, Type type) {
+    public Task(String name, String description, Status status) {
+        this.name = name;
+        this.description = description;
+        this.status = status;
+        this.type = Type.TASK;
+    }
+
+    public Task(String name, String description, Status status, Type type, 
+                LocalDateTime startTime, long duration) {
         this.name = name;
         this.description = description;
         this.status = status;
         this.type = type;
+        this.startTime = startTime;
+        this.duration = duration;
     }
 
     public String getName() {
@@ -54,9 +68,29 @@ public class Task {
         this.type = type;
     }
 
+    public LocalDateTime getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(LocalDateTime startTime) {
+        this.startTime = startTime;
+    }
+
+    public long getDuration() {
+        return duration;
+    }
+
+    public void setDuration(long duration) {
+        this.duration = duration;
+    }
+
+    public LocalDateTime getEndTime() { 
+        return startTime.plusMinutes(duration); 
+    }
+
     @Override
     public String toString() {
         return "Task{" + "name='" + name + '\'' + ", description='" + description +
-        '\'' + ", id=" + id + ", status=" + status + '}';
+        '\'' + ", id=" + id + ", status=" + status + "startTime=" + startTime + "duration=" + duration + '}';
     }
 }

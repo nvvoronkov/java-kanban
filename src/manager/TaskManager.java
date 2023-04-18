@@ -5,6 +5,7 @@ import model.Subtask;
 import model.Task;
 
 import java.util.List;
+import java.util.TreeSet;
 
 public interface TaskManager {
     void addTask(Task task); // Методы по добавлению задач, эпиков, подзадач
@@ -46,5 +47,7 @@ public interface TaskManager {
     Epic getEpicsById(int id);
 
     Subtask getSubtasksById(int id);
+
+    TreeSet<Task> getPrioritizedTasks();
 
 }

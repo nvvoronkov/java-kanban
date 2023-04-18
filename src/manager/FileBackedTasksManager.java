@@ -7,6 +7,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,12 +29,20 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
 
     public static void main(String[] args) {
         System.out.println();
-        /* TaskManager manager = loadFromFile(new File("src/resources/file.csv"));
-        manager.addTask(new Task("Task1", "Description task1", NEW, TASK));
-        manager.addEpic(new Epic("Epic2", "Description epic2", EPIC));
-        manager.addSubtask(new Subtask("Subtask2", "Description subtask3", DONE, SUBTASK, 2));
-        System.out.println(manager.getHistory()); */
         File file = new File("src/resources/file.csv");
+        FileBackedTasksManager firstManager = new FileBackedTasksManager(file); //Заполняем задачами файл
+        Task task1 = new Task("Task1", "Description task1", Status.NEW, TASK, LocalDateTime.of(2023, 04, 12, 22, 32), 30);
+        firstManager.addTask(task1);
+        Epic epic2 = new Epic("Epic2", "Description epic2", Status.DONE);
+        firstManager.addEpic(epic2);
+        Subtask subtask3 = new Subtask("Subtask3", "Description subtask3", Status.DONE, SUBTASK, LocalDateTime.of(2023, 04, 12, 20, 35), 20, epic2.getId());
+        firstManager.addSubtask(subtask3);
+        Subtask subtask4 = new Subtask("Subtask4", "Description subtask4", Status.DONE, SUBTASK, LocalDateTime.of(2023, 04, 12, 21, 35), 200, epic2.getId());
+        firstManager.addSubtask(subtask4);
+        firstManager.getSubtasksById(subtask3.getId());
+        firstManager.getEpicsById(epic2.getId());
+        firstManager.getTasksById(task1.getId());
+        System.out.println("История первого менеджера:" + firstManager.getHistory()); //Печатаем историю первого менеджера
         FileBackedTasksManager secondManager = loadFromFile(file); // Создаем новый FileBackedTasksManager менеджер из этого же файла
         System.out.println(secondManager.getTasks());
         System.out.println(secondManager.getEpics());
@@ -201,22 +210,25 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
 
         switch (type) {
             case TASK:
-                task = new Task(description, name, status, type);
+                task = new Task(name, description, status, type, 
+                                LocalDateTime.parse(split[5]), Long.parseLong(split[6]));
                 task.setId(id);
                 return task;
             case EPIC:
-                Epic epic = new Epic(description, name, type);
+                Epic epic = new Epic(description, name, status);
                 epic.setId(id);
+                epic.setStartTime(LocalDateTime.parse(split[5]));
+                epic.setDuration(Long.parseLong(split[6]));
                 return epic;
             case SUBTASK:
-                int idEpic = Integer.parseInt(split[5]);
-                Subtask subtask = new Subtask(description, name, status, type, idEpic);
+                int idEpic = Integer.parseInt(split[7]);
+                Subtask subtask = new Subtask(description, name, status, type, LocalDateTime.parse(split[5]), 
+                                              Long.parseLong(split[6]), idEpic);
                 subtask.setId(id);
                 subtask.setId(idEpic);
                 return subtask;
         }
-        return task;
-        
+        return task; 
     }
 
     private static String historyToString(HistoryManager manager) {
@@ -233,7 +245,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
     static List<Integer> historyFromString(String value) {
         List<Integer> history = new ArrayList<>();
         String[] items = value.split(",");
-        for (int i = 0; i < items.length; i++) {
+        for (int i = items.length - 1; i >= 0; i--) {
             int id = Integer.valueOf(items[0]);
             history.add(id);
         }
