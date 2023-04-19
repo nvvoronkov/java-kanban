@@ -28,7 +28,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
     }
 
     public static void main(String[] args) {
-        System.out.println();
+        /* System.out.println();
         File file = new File("src/resources/file.csv");
         FileBackedTasksManager firstManager = new FileBackedTasksManager(file); //Заполняем задачами файл
         Task task1 = new Task("Task1", "Description task1", Status.NEW, TASK, LocalDateTime.of(2023, 04, 12, 22, 32), 30);
@@ -49,7 +49,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         System.out.println(secondManager.getSubtasks());
         System.out.println();
         System.out.println("История второго менеджера:" + secondManager.getHistory()); //Печатаем историю второго менеджера
-        System.out.println();
+        System.out.println(); */
     }
 
     @Override 
