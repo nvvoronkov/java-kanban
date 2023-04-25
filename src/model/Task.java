@@ -2,6 +2,9 @@ package model;
 
 import java.time.LocalDateTime;
 
+import model.constants.Status;
+import model.constants.Type;
+
 public class Task {
     private String name; // Наименование задачи
     private String description; // Описание задачи

@@ -1,7 +1,11 @@
 package tests;
 
 import manager.*;
+import manager.history.HistoryManager;
 import model.*;
+import model.constants.Status;
+import model.constants.Type;
+
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

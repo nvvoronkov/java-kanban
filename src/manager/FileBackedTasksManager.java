@@ -1,5 +1,7 @@
 package manager;
 
+import static model.constants.Type.*;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -12,13 +14,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import exception.ManagerSaveException;
+import manager.history.HistoryManager;
 import model.Epic;
-import model.Status;
 import model.Subtask;
 import model.Task;
-import model.Type;
-
-import static model.Type.*;
+import model.constants.Status;
+import model.constants.Type;
 
 public class FileBackedTasksManager extends InMemoryTaskManager {
     private File file = new File("src/resources/file.csv");
@@ -161,7 +162,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         return super.getHistory();
     }
 
-    public void save() { 
+    protected void save() { 
         if (!file.exists()) {
             System.out.println("Данный файл не существует.");
             try (BufferedWriter fileWriter = new BufferedWriter(new FileWriter(file, 

@@ -4,12 +4,12 @@ import java.util.stream.Collectors;
 import model.Epic;
 import model.Subtask;
 import model.Task;
-import model.Type;
-import model.Status;
+import model.constants.Status;
+import model.constants.Type;
 import manager.InMemoryTaskManager;
 
-public class Main {
-    public static void main(String[] args) {
+public class MainOld {
+    public static void mainOld(String[] args) {
         System.out.println(" ");
         System.out.println("******** Вас приветствуюет трекер задач ********");
         System.out.println("Поехали!");

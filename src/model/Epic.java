@@ -4,6 +4,9 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import model.constants.Status;
+import model.constants.Type;
+
 public class Epic extends Task {
     private final List<Integer> subtaskId = new ArrayList<>();// Список идентификаторов в эпике
     private LocalDateTime endTime;

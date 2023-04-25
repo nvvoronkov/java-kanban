@@ -2,6 +2,9 @@ package model;
 
 import java.time.LocalDateTime;
 
+import model.constants.Status;
+import model.constants.Type;
+
 public class Subtask extends Task {
     private final int idEpic; // Определяем ID по эпику, к которому относится
 

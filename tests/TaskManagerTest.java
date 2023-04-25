@@ -2,6 +2,9 @@ package tests;
 
 import manager.TaskManager;
 import model.*;
+import model.constants.Status;
+import model.constants.Type;
+
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;

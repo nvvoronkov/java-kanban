@@ -1,4 +1,4 @@
-package model;
+package model.constants;
 
 public enum Status {
     NEW, // Новая задача

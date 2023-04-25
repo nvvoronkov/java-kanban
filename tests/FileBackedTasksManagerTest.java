@@ -2,6 +2,9 @@ package tests;
 
 import manager.FileBackedTasksManager;
 import model.*;
+import model.constants.Status;
+import model.constants.Type;
+
 import org.junit.Test;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -16,7 +19,6 @@ public class FileBackedTasksManagerTest extends TaskManagerTest<FileBackedTasksM
 
     @BeforeEach
     public void beforeEach() {
-        manager = new FileBackedTasksManager(file);
         Task firstTask = new Task("Test taskName", "Test Description task", Status.NEW, Type.TASK,
                                  LocalDateTime.of(2023, 04, 12, 22, 32), 30);
         Epic firstEpic = new Epic("Test taskName", "Test Description task", Status.NEW);
