@@ -3,8 +3,9 @@ package manager.http;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import exception.ManagerSaveException;
-import manager.FileBackedTasksManager;
+import manager.history.FileBackedTasksManager;
 import model.Epic;
+import model.Subtask;
 import model.Task;
 
 import java.io.File;
@@ -31,7 +32,7 @@ public class HTTPTaskManager extends FileBackedTasksManager {
             kvTaskClient.put("tasks/subtask", gson.toJson(subtasks));
             kvTaskClient.put("tasks/history", gson.toJson(getHistory()));
         } catch (Exception e) {
-            throw new ManagerSaveException("Ошибка в сохранении", e);
+            throw new ManagerSaveException("Ошибка в сохранении");
         }
     }
 
@@ -42,7 +43,7 @@ public class HTTPTaskManager extends FileBackedTasksManager {
             }.getType();
 
             tasks = gson.fromJson(tasksFromJson, typeToken);
-            taskTreeSet.addAll(tasks.values());
+            prioritizedTasks.addAll(tasks.values());
         }
 
         String epicsFromJson = kvTaskClient.load("tasks/epic");
@@ -51,16 +52,16 @@ public class HTTPTaskManager extends FileBackedTasksManager {
             }.getType();
 
             epics = gson.fromJson(epicsFromJson, typeToken);
-            taskTreeSet.addAll(epics.values());
+            prioritizedTasks.addAll(epics.values());
         }
 
         String subTasksFromJson = kvTaskClient.load("tasks/subtask");
         if (subTasksFromJson != null) {
-            Type typeToken = new TypeToken<HashMap<Integer, SubTask>>() {
+            Type typeToken = new TypeToken<HashMap<Integer, Subtask>>() {
             }.getType();
 
             subtasks = gson.fromJson(subTasksFromJson, typeToken);
-            taskTreeSet.addAll(subtasks.values());
+            prioritizedTasks.addAll(subtasks.values());
         }
 
         String historyFromJson = kvTaskClient.load("tasks/history");

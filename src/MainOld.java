@@ -20,7 +20,7 @@ public class MainOld {
 
     private static void testCode() {
 
-        InMemoryTaskManager manager = new InMemoryTaskManager();
+        /* InMemoryTaskManager manager = new InMemoryTaskManager();
         Epic epic = new Epic("новый эпик 1", "описание эпика 1", Status.NEW);
         manager.addEpic(epic);
 //Данная задача должна быть 4 по счёту
@@ -62,7 +62,7 @@ public class MainOld {
         System.out.println(epic.getStartTime() + " == " + subtask4.getStartTime() + " " + epic.getStartTime().equals(subtask4.getStartTime()));
         System.out.println(epic.getEndTime() + " == " + subtask4.getEndTime() + " " + epic.getEndTime().equals(subtask4.getEndTime()));
         System.out.println(manager.getPrioritizedTasks().stream().map(Task::getName).collect(Collectors.toList()));
-        
+         */
         //TaskManager taskManager = Manager.getDefault();
        
         // Task taskOne = new Task("Задача №1", "Описание задачи №1", NEW);

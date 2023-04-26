@@ -28,6 +28,12 @@ public interface TaskManager {
 
     void deleteSubtaskById(int id);
 
+    int createTask(Task task);
+
+    int createEpic(Epic epic);
+
+    int createSubtask(Epic epic, Subtask subtask);
+
     Task updateTask(Task task); // Методы по обновлению задач, подзадач, эпиков
 
     Epic updateEpic(Epic epic);
@@ -39,6 +45,8 @@ public interface TaskManager {
     List<Epic> getEpics();
 
     List<Subtask> getSubtasks();
+
+    List<Subtask> getAllSubtaskOfEpic(Epic epic);
 
     List<Task> getHistory(); // Метод, возвращающий 10 последних просмотренных задач
 

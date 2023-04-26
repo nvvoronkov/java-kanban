@@ -2,7 +2,9 @@ package manager;
 
 import java.io.File;
 
+import manager.history.FileBackedTasksManager;
 import manager.history.HistoryManager;
+import manager.history.InMemoryHistoryManager;
 import manager.http.HTTPTaskManager;
 
 public abstract class Manager { // Утилитарный класс, отвечающий за создание менеджера задач

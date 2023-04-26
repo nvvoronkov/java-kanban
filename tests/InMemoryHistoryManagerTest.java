@@ -2,6 +2,7 @@ package tests;
 
 import manager.*;
 import manager.history.HistoryManager;
+import manager.history.InMemoryHistoryManager;
 import model.*;
 import model.constants.Status;
 import model.constants.Type;

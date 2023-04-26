@@ -8,7 +8,7 @@ import model.constants.Status;
 import model.constants.Type;
 
 public class Epic extends Task {
-    private final List<Integer> subtaskId = new ArrayList<>();// Список идентификаторов в эпике
+    private List<Integer> subtaskId = new ArrayList<>();// Список идентификаторов в эпике
     private LocalDateTime endTime;
 
     public Epic(String name, String description, Status status) {
@@ -19,6 +19,10 @@ public class Epic extends Task {
 
     public List<Integer> getSubtasksById() {
         return subtaskId;
+    }
+
+    public void setSubtaskId(List<Integer> subtaskId) {
+        this.subtaskId = subtaskId;
     }
 
     public void addSubtasksById(int idSubtask) { // Методы для добавления, удаления, очистки подзадач в эпике

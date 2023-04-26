@@ -1,6 +1,5 @@
 package tests;
 
-import manager.FileBackedTasksManager;
 import model.*;
 import model.constants.Status;
 import model.constants.Type;
@@ -8,6 +7,8 @@ import model.constants.Type;
 import org.junit.Test;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+
+import manager.history.FileBackedTasksManager;
 
 import java.io.File;
 import java.time.LocalDateTime;

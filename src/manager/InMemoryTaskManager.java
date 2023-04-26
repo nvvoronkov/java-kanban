@@ -4,6 +4,7 @@ import model.Epic;
 import model.Subtask;
 import model.Task;
 import model.constants.Status;
+import exception.ManagerSaveException;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -15,24 +16,27 @@ import java.util.TreeSet;
 import manager.history.HistoryManager;
 
 public class InMemoryTaskManager implements TaskManager { // Класс для хранения всей необходимой информации задач, эпиков, подзадач
-    protected final Map<Integer, Task> tasks = new HashMap<>(); // Присвоение соответствия между идентификатором и задачей
-    protected final Map<Integer, Epic> epics = new HashMap<>();
-    protected final Map<Integer, Subtask> subtasks = new HashMap<>();
+    protected Map<Integer, Task> tasks = new HashMap<>(); // Присвоение соответствия между идентификатором и задачей
+    protected Map<Integer, Epic> epics = new HashMap<>();
+    protected Map<Integer, Subtask> subtasks = new HashMap<>();
     protected final HistoryManager historyManager = Manager.getDefaultHistory();
-    protected final TreeSet<Task> prioritizedTasks;
+    protected final TreeSet<Task> prioritizedTasks = new TreeSet<>((o1, o2) -> {
+        if (o1.getStartTime() == null && o2.getStartTime() == null) return o1.getId() - o2.getId();
+        if (o1.getStartTime() == null) return 1;
+        if (o2.getStartTime() == null) return -1;
+        if (o1.getStartTime().isAfter(o2.getStartTime())) return 1;
+        if (o1.getStartTime().isBefore(o2.getStartTime())) return -1;
+        if (o1.getStartTime().isEqual(o2.getStartTime())) return o1.getId() - o2.getId();
+        return 0;
+    });
     public final HistoryManager inMemoryHistoryManager = Manager.getDefaultHistory();
     private int id = 0;
 
-    public InMemoryTaskManager() {
-        this.prioritizedTasks = new TreeSet<>((task1, task2) -> {
-            if (task1.getStartTime() == null) {
-                return 1;
-            }
-            if (task2.getStartTime() == null) {
-                return -1;
-            }
-            return task1.getStartTime().compareTo(task2.getStartTime());
-        });
+    private void setTaskEndTime(Task task) {
+        if (task.getDuration() != (Long) null && task.getStartTime() != null) {
+            LocalDateTime endTime = task.getStartTime().plusDays(task.getDuration());
+            task.setEndTime(endTime);
+        }
     }
 
     public HistoryManager getInMemoryHistoryManager() {
@@ -175,6 +179,81 @@ public class InMemoryTaskManager implements TaskManager { // Класс для �
     }
 
     @Override
+    public int createTask(Task task) {
+        task.setId(id++);
+
+        if (task.getDuration() == (Long) null) {
+            task.setDuration(0);
+        }
+
+        if (task.getStatus() == null) {
+            task.setStatus(Status.NEW);
+        }
+
+        setTaskEndTime(task);
+
+        if (checkIntersection(task)) {
+            prioritizedTasks.add(task);
+            tasks.put(task.getId(), task);
+        } else {
+            throw new ManagerSaveException("Задача не сохранена, задачи не должны пересекаться по времени исполнения");
+        }
+        return task.getId();
+    }
+
+    @Override
+    public int createEpic(Epic epic) {
+        epic.setId(id++);
+
+        if (epic.getSubtasksById() == null) {
+            epic.setSubtaskId(new ArrayList<>());
+        }
+
+        if (epic.getDuration() == (Long)null) {
+            epic.setDuration(0);
+        }
+
+        if (epic.getStatus() == null) {
+            epic.setStatus(Status.NEW);
+        }
+
+        epics.put(epic.getId(), epic);
+        return epic.getId();
+    }
+
+    @Override
+    public int createSubtask(Epic epic, Subtask subtask) {
+        subtask.setId(id++);
+
+        if (subtask.getDuration() == (Long)null) {
+            subtask.setDuration(0);
+        }
+
+        if (subtask.getStatus() == null) {
+            subtask.setStatus(Status.NEW);
+        }
+
+        setTaskEndTime(subtask);
+        epic.getSubtasksById().add(subtask.getId());
+        subtask.setId(epic.getId());
+
+        if (checkIntersection(subtask)) {
+            prioritizedTasks.add(subtask);
+           subtasks.put(subtask.getId(), subtask);
+
+            if (subtask.getStartTime() == null) {
+                return subtask.getId();
+            }
+
+            updateTimeEpic(epic);
+
+        } else {
+            throw new ManagerSaveException("Подзадача не сохранена, задачи не должны пересекаться по времени исполнения");
+        }
+        return subtask.getId();
+    }
+
+    @Override
     public Task updateTask(Task task) { // Методы по обновлению задач, подзадач, эпиков
         if (tasks.containsKey(task.getId())) {
             tasks.put(task.getId(), task);
@@ -201,17 +280,32 @@ public class InMemoryTaskManager implements TaskManager { // Класс для �
         return null;
     }
 
+    @Override
     public List<Task> getTasks() {
         return new ArrayList<>(tasks.values());
     }
 
+    @Override
     public List<Epic> getEpics() {
         return new ArrayList<>(epics.values());
     }
 
+    @Override
     public List<Subtask> getSubtasks() {
         return new ArrayList<>(subtasks.values());
     }
+
+    @Override
+    public List<Subtask> getAllSubtaskOfEpic(Epic epic) {
+        List<Subtask> subtaskList = new ArrayList<>();
+        for (Integer subtaskKey : subtasks.keySet()) {
+            if (subtasks.get(subtaskKey).getIdEpic() == epic.getId()) {
+                subtaskList.add(subtasks.get(subtaskKey));
+            }
+        }
+        return subtaskList;
+    }
+
 
     @Override
     public Epic getEpicsById(int id) {
@@ -292,5 +386,32 @@ public class InMemoryTaskManager implements TaskManager { // Класс для �
                 epic.setEndTime(endTime);
             }
         }
+    }
+
+    private boolean checkIntersection(Task task) {
+        boolean isValid = true;
+
+        if (!prioritizedTasks.isEmpty()) {
+            for (Task taskForCheck : prioritizedTasks) {
+
+                if ((task.getStartTime() != null && task.getEndTime() != null) &&
+                        (taskForCheck.getStartTime() != null && taskForCheck.getEndTime() != null)) {
+
+                    if ((task.getStartTime().isEqual(taskForCheck.getStartTime())) ||
+                            (task.getEndTime().isEqual(taskForCheck.getEndTime())) ||
+                            ((task.getStartTime().isBefore(taskForCheck.getEndTime())) &&
+                                    (task.getStartTime().isAfter(taskForCheck.getStartTime()))) ||
+                            ((task.getEndTime().isBefore(taskForCheck.getEndTime())) &&
+                                    (task.getEndTime().isAfter(taskForCheck.getStartTime()))) ||
+                            ((task.getStartTime().isBefore(taskForCheck.getStartTime())) &&
+                                    (task.getEndTime().isAfter(taskForCheck.getEndTime()))) ||
+                            ((task.getStartTime().isAfter(taskForCheck.getStartTime())) &&
+                                    (task.getEndTime().isBefore(taskForCheck.getEndTime())))) {
+                        isValid = false;
+                    }
+                }
+            }
+        }
+        return isValid;
     }
 }

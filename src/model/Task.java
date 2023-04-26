@@ -12,6 +12,7 @@ public class Task {
     private Status status; // Статус задачи: NEW, IN_PROGRESS, DONE
     private Type type; // Тип задачи: Task, Epic, Subtask
     private LocalDateTime startTime; //Cтарт задачи
+    protected LocalDateTime endTime; //Конец задачи
     private long duration; // Продолжительность задачи
 
     public Task(String name, String description, Status status) {
@@ -89,6 +90,10 @@ public class Task {
 
     public LocalDateTime getEndTime() { 
         return startTime.plusMinutes(duration); 
+    }
+
+    public void setEndTime(LocalDateTime endTime) {
+        this.endTime = endTime;
     }
 
     @Override
