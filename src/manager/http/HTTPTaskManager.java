@@ -14,9 +14,9 @@ import java.util.HashMap;
 import java.util.List;
 
 
-public class HTTPTaskManager extends FileBackedTasksManager {
+public class HttpTaskManager extends FileBackedTasksManager {
 
-    public HTTPTaskManager(File file, String url) {
+    public HttpTaskManager(File file, String url) {
         super(file);
         this.kvTaskClient = new KVTaskClient(url);
     }

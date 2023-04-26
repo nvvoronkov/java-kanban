@@ -21,14 +21,14 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 
-public class HTTPTaskServer {
+public class HttpTaskServer {
     private static final int PORT = 8078;
     private static final Charset CHARSET = StandardCharsets.UTF_8;
     private final Gson gson;
     private final TaskManager manager;
     private final HttpServer server;
 
-    public HTTPTaskServer() throws IOException {
+    public HttpTaskServer() throws IOException {
         gson = new Gson()
                 .newBuilder()
                 .setPrettyPrinting()
