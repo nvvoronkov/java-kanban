@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.TreeSet;
 
 public interface TaskManager {
+
     void addTask(Task task); // Методы по добавлению задач, эпиков, подзадач
 
     void addEpic(Epic epic);
